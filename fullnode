@@ -26,8 +26,21 @@ wget -qO fullnode.yaml https://raw.githubusercontent.com/aptos-labs/aptos-core/m
 nano fullnode.yaml
 
 #We substitute the ip from the validator and save.
-
 #We go to the validator serv and download from there to the full node serv to the ~/testnet/ directory
-validator-full-node-identity.yaml
-genesis.blob
-waypoint.txt#
+#validator-full-node-identity.yaml genesis.blob waypoint.txt#
+
+docker compose up -d
+
+#We go to the validator server, change the ip of the full node
+
+aptos genesis set-validator-configuration \
+    --keys-dir ~/$WORKSPACE --local-repository-dir ~/$WORKSPACE \
+    --username $NODENAME \
+    --validator-host $PUBLIC_IP:6180 \
+    --full-node-host <YOUR_FULLNODE_IP>:6182
+    
+cd .aptos
+docker compose restart
+
+#Checking logs and synchronization on a full node
+curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type
