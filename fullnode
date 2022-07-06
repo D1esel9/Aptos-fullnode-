@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #After installing the validator, we take a new server and execute the commands:
 sudo apt update && sudo apt upgrade -y
 
